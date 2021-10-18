@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react'
 
 import AnimateLoginReg from './auth/animateLoginReg';
 import './styles/custom-style.scss';
-
+import Home from './learn redux/home'
 
 
 const lang_check = localStorage.getItem("lang_dir");
@@ -33,11 +33,15 @@ export default function RouterHome() {
     return (
         <div>
 
-            <Router>
+            <Router >
 
                 <Switch>
                     <Route path={ process.env.MIX_FOLDER_APP_NAME + "auth"} >
                                 <AnimateLoginReg />
+                    </Route>
+
+                           <Route path={ process.env.MIX_FOLDER_APP_NAME + "home"}>
+                                <Home />
                     </Route>
 
                      <Route path="/">

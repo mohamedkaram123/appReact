@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Translation;
 
 if (!function_exists('responseJson')) {
 
@@ -19,10 +20,6 @@ if (!function_exists('translate_data')) {
 
     function translate_data($data, $lang = null)
     {
-        if ($lang == null) {
-            $lang = App::getLocale();
-        }
-
         foreach ($data as $key => $value) {
             $translation_def = Translation::where('lang', env('DEFAULT_LANGUAGE', 'en'))->where('lang_key', $key)->first();
             if ($translation_def == null) {

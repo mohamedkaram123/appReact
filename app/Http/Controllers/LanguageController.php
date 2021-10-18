@@ -26,4 +26,16 @@ class LanguageController extends Controller
 
         return responseJson(1, trans('api.done'), ["langs" => $langs, "check_lang" => session()->get("locale")]);
     }
+
+
+    public function translate(Request $request)
+    {
+        return responseJson(1, trans('api.done'), translate_data($request->trans, $request->header('Accept-Language')));
+    }
+
+
+    public function translate_auth(Request $request)
+    {
+        return responseJson(1, trans('api.done'), translate_data($request->trans, $request->header('Accept-Language')));
+    }
 }

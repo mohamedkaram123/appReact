@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', [HomeController::class, "showHome"])->name("home");
+Route::view('{path}', 'master')->where('path', '([A-z\d\-\/_.]+)?');
 
 
 // Route::get('home', [HomeController::class, "showHome"])->name("home");

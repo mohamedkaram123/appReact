@@ -7,38 +7,26 @@ import {
     Link,
     Redirect
 } from "react-router-dom";
-  import Home from '../learn redux/home'
-export default function CheckAuth() {
-        const [logged, setlogged] = useState(false)
-           const mounted = useRef(false);
-    useEffect(() => {
-      if (!mounted.current) {
+import Home from '../learn redux/home'
+import { connect } from 'react-redux';
+
+  import {encryptLocalStorage,decryptLocalStorage} from '../helpers/hash';
+
+export default  function CheckAuth() {
+
+const logged = false;
+
+    const [loggedData, setloggedData] = useState(false)
+
+    if(decryptLocalStorage('user'))  {
 
 
-          if (!localStorage.getItem('user')) {
-
-              setlogged(false)
-          } else {
-              setlogged(true)
-
-          }
+                return <Redirect to={process.env.MIX_FOLDER_APP_NAME+"home"} />;
 
 
-        mounted.current = true;
-      } else {
+    } else {
 
-        // do componentDidUpdate logic
-      }
-    }, []);
-    if(logged)  {
-
-
-           return (
-        <div className="d-flex flex-row" style={{justifyContent:"center",alignItems:"center",marginTop:50}}>
-            <Home />
-        </div>
-    )
-     }else {
         return <Redirect to={process.env.MIX_FOLDER_APP_NAME+"auth"} />;
      }
 }
+

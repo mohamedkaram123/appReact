@@ -5,18 +5,36 @@ import Register from './register';
 import LoadinOverlay from '../helpers/loadinOverlay';
 import LoadingInline from '../helpers/LoadingInline';
 import axios from "axios";
-
+import { header, csrf_token } from '../helpers/header';
 import NavbarLogin from './navbar_login';
-
+import { useHistory } from "react-router-dom";
+import {encryptLocalStorage,decryptLocalStorage} from '../helpers/hash';
+import {
+    BrowserRouter as Router,
+    Switch,
+    Route,
+    Link,
+    Redirect
+} from "react-router-dom";
 export default function AnimateLoginReg() {
+          let history = useHistory();
 
     const [transformSpring1, settransformSpring1] = useState(`translate(0px, 0px)`)
     const [transformSpring2, settransformSpring2] = useState(`translate(1200px, 0px)`)
     const [toglleSpring, settoglleSpring] = useState(true)
     const [loading, setloading] = useState(false)
     const [loadingPage, setloadingPage] = useState(true)
+        const [authLogin, setauthLogin] = useState(false)
+
     const [langs, setLangs] = useState({})
     const [checkLang, setCheckLang] = useState("")
+    const [trans, setTrans] = useState({
+        "Navbar": "",
+        "Home": "",
+        "Langs": "",
+        "Register": "",
+        "Login":""
+    })
 
     const fade1 = useSpring({
         transform: transformSpring1,
@@ -63,17 +81,59 @@ export default function AnimateLoginReg() {
         })
     }
 
+
+      const  get_trans = () => {
+
+
+
+
+          let data = {
+              csrf_token,
+              trans
+          }
+        axios.post(process.env.MIX_API_DOMAIN +"translate",data,header)
+            .then(res => {
+
+                console.log({res});
+                if (res.data.status == 1) {
+
+                    setTrans(res.data.data)
+
+                }
+                console.log(res);
+
+        })
+        .catch(err=>{
+
+        })
+    }
+
    const mounted = useRef(false);
     useEffect(() => {
         if (!mounted.current) {
-          get_langs()
+
+
+            if (!decryptLocalStorage('user')) {
+                  get_langs()
+                get_trans()
+            }
         mounted.current = true;
-      } else {
+        } else {
+
+//                        setauthLogin(false)
+
+
 
         // do componentDidUpdate logic
       }
     }, []);
-    if (loadingPage) {
+
+
+    if (decryptLocalStorage('user')) {
+                    return <Redirect to={process.env.MIX_FOLDER_APP_NAME+"home"} />;
+
+    } else {
+            if (loadingPage) {
 
         return (
             <div>
@@ -86,19 +146,19 @@ export default function AnimateLoginReg() {
         <div >
 
             {loading ? <LoadinOverlay /> : null}
-            <NavbarLogin langs={langs} checkLang={checkLang} register={register_link} login={login_link}  />
+            <NavbarLogin trans={trans} langs={langs} register={register_link} login={login_link}  />
             <div className="d-flex flex-column" style={{ justifyContent: "center", alignItems: "center" }}>
                 <div style={{marginBlock:50}}>
                                    <animated.div style={fade1}>
                 <div style={{display:toglleSpring?"block":"none"}}>
 
-                    <Login />
+                    <Login handleLoading={handleLoading} trans={trans} />
                     </div>
 
             </animated.div>
                 <animated.div style={fade2}>
                     <div style={{display:toglleSpring?"none":"block"}}>
-                    <Register handleLoading={handleLoading} />
+                    <Register trans={trans} handleLoading={handleLoading} />
 
                     </div>
 
@@ -125,5 +185,7 @@ export default function AnimateLoginReg() {
         </div>
     )
     }
+    }
+
 
 }

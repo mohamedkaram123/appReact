@@ -25,4 +25,9 @@ Route::middleware('lang_switch')->group(function () {
     Route::post("login", [AuthController::class, "login"]);
     Route::get("langs", [LanguageController::class, "get_langs"]);
     Route::get('changeLanguage', [LanguageController::class, "changeLanguage"]);
+    Route::post('translate', [LanguageController::class, "translate"]);
+
+    Route::group(['middleware' => ['auth:api']], function () {
+        Route::post('translate_auth', [LanguageController::class, "translate_auth"]);
+    });
 });

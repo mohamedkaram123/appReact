@@ -35,7 +35,7 @@ class AuthController extends Controller
         }
         $credentials = $request->only('email', 'password');
         if (\Auth::attempt($credentials)) {
-            return responseJson(0, trans('api.user_exist'));
+            return responseJson(0, ["email" => [trans('api.user_exist')]]);
         }
 
         $user = new User();
@@ -70,12 +70,12 @@ class AuthController extends Controller
 
         $credentials = $request->only('email', 'password');
         if (\Auth::attempt($credentials)) {
-            $user = Auth::user();
+            $user = \Auth::user();
             $token = $user->createToken('userToken')->accessToken;
             $user["access_token"]  = $token;
             return responseJson(1, trans('api.user_is_login'), $user);
         }
 
-        return responseJson(0, trans('api.user_not_register'));
+        return responseJson(0, ["email" => [trans('api.user_not_register')]]);
     }
 }

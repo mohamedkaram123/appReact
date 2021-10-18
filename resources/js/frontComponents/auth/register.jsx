@@ -2,9 +2,13 @@
 import React,{useRef,useState,useEffect} from 'react'
 import { useSpring, animated } from 'react-spring'
 import axios from "axios";
+import { useHistory } from "react-router-dom";
+import {encryptLocalStorage,decryptLocalStorage} from '../helpers/hash';
 
 
-export default function Register({handleLoading}) {
+export default function Register({ handleLoading, trans }) {
+          let history = useHistory();
+
     const  loginImg = process.env.MIX_ASSET_URL + "uploads/login.svg";
     const [name, setName] = useState("")
     const [email, setEmail] = useState("")
@@ -54,7 +58,12 @@ export default function Register({handleLoading}) {
                     });
                     console.log({error});
 
+                } else {
+                    encryptLocalStorage(res.data.data,"user")
+
+                        history.replace(process.env.MIX_FOLDER_APP_NAME + "home")
                 }
+
                 console.log(res);
 
         })
@@ -66,30 +75,30 @@ export default function Register({handleLoading}) {
 
     return (
    <div className="base-container" >
-        <div className="header">Register</div>
+            <div className="header">{trans["Register"]}</div>
         <div className="content">
           <div className="image">
             <img src={loginImg} />
           </div>
           <div className="form">
-            <div className="form-group">
-              <label htmlFor="username">Username</label>
-                        <input onChange={e => {
+            <div className="form-group" style={{marginBottom:30}} >
+                        <label htmlFor="username">{trans["Username"]}</label>
+                        <input style={{marginBottom:0}} onChange={e => {
                             setName(e.target.value)
                         }} type="text" name="username" placeholder="username" />
                         <small style={{color:"#dc3545"}}>{ error.name}</small>
             </div>
-            <div className="form-group">
-              <label htmlFor="email">Email</label>
-              <input  onChange={e => {
+            <div className="form-group" style={{marginBottom:30}} >
+                        <label htmlFor="email">{trans["Email"]}</label>
+              <input style={{marginBottom:0}}  onChange={e => {
                             setEmail(e.target.value)
                         }} type="text" name="email" placeholder="email" />
                         <small style={{color:"#dc3545"}}>{ error.email}</small>
 
             </div>
-            <div className="form-group">
-              <label htmlFor="password">Password</label>
-              <input  onChange={e => {
+            <div className="form-group"  style={{marginBottom:30}}>
+                        <label htmlFor="password">{trans["Password"]}</label>
+              <input style={{marginBottom:0}} onChange={e => {
                             setpassword(e.target.value)
                         }} type="text" name="password" placeholder="password" />
                         <small style={{color:"#dc3545"}}>{ error.password}</small>
@@ -99,7 +108,7 @@ export default function Register({handleLoading}) {
         </div>
         <div className="footer">
           <button onClick={register} type="button" className="btn">
-            Register
+                    {trans["Register"]}
           </button>
         </div>
       </div>

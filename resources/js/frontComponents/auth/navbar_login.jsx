@@ -1,25 +1,23 @@
 import React from 'react'
 
-export default function NavbarLogin({register,login,langs}) {
+export default function NavbarLogin({register,login,langs,trans}) {
     return (
         <div>
       <nav className="navbar navbar-expand-lg navbar-light bg-light">
   <div className="container-fluid">
-    <a className="navbar-brand" href="#">Navbar</a>
+    <a className="navbar-brand" href="#">{trans["Navbar"]}</a>
     <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span className="navbar-toggler-icon"></span>
     </button>
     <div className="collapse navbar-collapse" id="navbarSupportedContent">
       <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+
         <li className="nav-item">
-          <a className="nav-link active" aria-current="page" href="#">Home</a>
-        </li>
-        <li className="nav-item">
-          <a className="nav-link" href="#">Link</a>
+                                <a className="nav-link" href="#">{trans["Link"]}</a>
         </li>
         <li className="nav-item dropdown">
           <a className="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Langs
+                                    {trans["Langs"]}
           </a>
           <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
               {langs.map((item,i)=>{
@@ -37,22 +35,20 @@ export default function NavbarLogin({register,login,langs}) {
               })}
           </ul>
         </li>
-        <li className="nav-item">
-          <a className="nav-link disabled" href="#" tabIndex="-1" aria-disabled="true">Disabled</a>
-        </li>
+
       </ul>
       <div className="d-flex">
           <ul className="navbar-nav ">
           <li className="nav-item">
           <button onClick={()=>{
               register()
-          }} className="btn btn-link link-a" aria-current="page" >Register</button>
+                                    }} className="btn btn-link link-a" aria-current="page" >{trans["Register"]}</button>
         </li>
         <li className="nav-item">
           <button onClick={()=>{
                             login()
 
-          }} className="btn btn-link link-a" >Login</button>
+                                    }} className="btn btn-link link-a" >{trans["Login"]}</button>
         </li>
       </ul>
       </div>
